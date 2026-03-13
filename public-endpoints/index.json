@@ -1,0 +1,5 @@
+{
+  "version": "3.0.0",
+  "description": "AgentBase public reference implementation",
+  "directory": "/public-endpoints/directory.json"
+}
