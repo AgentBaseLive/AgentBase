@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgentBase Index Schema",
+  "type": "object",
+  "properties": {
+    "version": { "type": "string" },
+    "description": { "type": "string" },
+    "directory": { "type": "string", "format": "uri-reference" }
+  },
+  "required": ["version", "directory"]
+}
