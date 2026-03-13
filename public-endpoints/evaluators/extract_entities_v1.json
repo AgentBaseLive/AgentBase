@@ -1,0 +1,22 @@
+{
+  "id": "extract_entities_v1_evaluator",
+  "description": "Validates the output of the extract_entities_v1 task.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "entities": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "type": { "type": "string" },
+            "value": { "type": "string" }
+          },
+          "required": ["type", "value"]
+        }
+      }
+    },
+    "required": ["entities"]
+  },
+  "evaluation_logic": "Checks that entities is an array of {type, value} objects."
+}
