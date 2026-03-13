@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgentBase Directory Schema",
+  "type": "object",
+  "properties": {
+    "version": { "type": "string" },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "path": { "type": "string" }
+        },
+        "required": ["id", "path"]
+      }
+    }
+  },
+  "required": ["version", "tasks"]
+}
