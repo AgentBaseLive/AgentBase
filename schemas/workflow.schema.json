@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgentBase Workflow Schema",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "task": { "type": "string" },
+          "input_mapping": { "type": "object" }
+        },
+        "required": ["task"]
+      }
+    }
+  },
+  "required": ["id", "steps"]
+}
