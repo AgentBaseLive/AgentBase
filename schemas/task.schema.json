@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgentBase Task Schema",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "input_schema": { "type": "object" },
+    "output_schema": { "type": "object" },
+    "evaluator": { "type": "string" }
+  },
+  "required": ["id", "input_schema", "output_schema"]
+}
