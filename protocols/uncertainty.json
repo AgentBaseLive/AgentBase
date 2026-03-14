@@ -1,0 +1,96 @@
+{
+  "id": "agentbase.protocols.uncertainty.v1",
+  "version": "1.0.0",
+  "description": "Protocol defining how agents express uncertainty, handle ambiguity, request clarification, and avoid hallucination within the AgentBase ecosystem.",
+
+  "goals": [
+    "Provide a structured way for agents to express uncertainty.",
+    "Reduce hallucinations by enforcing explicit uncertainty states.",
+    "Define when agents must ask for clarification instead of guessing.",
+    "Support confidence scoring for evaluators and workflows."
+  ],
+
+  "uncertainty_states": {
+    "type": "string",
+    "enum": [
+      "none",
+      "low",
+      "medium",
+      "high",
+      "unknown"
+    ],
+    "descriptions": {
+      "none": "The agent is fully confident in the answer.",
+      "low": "Minor uncertainty; answer is likely correct.",
+      "medium": "Meaningful uncertainty; answer may be incomplete or partially incorrect.",
+      "high": "High uncertainty; the agent should avoid committing to a specific answer.",
+      "unknown": "The agent cannot determine confidence due to missing or conflicting information."
+    }
+  },
+
+  "confidence_scoring": {
+    "range": "0.0 to 1.0",
+    "default": 0.75,
+    "rules": [
+      "Scores below 0.4 require a clarification request.",
+      "Scores between 0.4 and 0.6 require hedging language.",
+      "Scores above 0.6 allow direct answers with optional caveats."
+    ]
+  },
+
+  "clarification_rules": {
+    "must_ask_for_clarification_when": [
+      "Input is ambiguous or incomplete.",
+      "Multiple interpretations are equally plausible.",
+      "The agent's confidence score is below 0.4.",
+      "The task schema cannot be validated with the provided input."
+    ],
+    "clarification_envelope": {
+      "type": "object",
+      "properties": {
+        "reason": { "type": "string" },
+        "missing_information": { "type": "array", "items": { "type": "string" } },
+        "suggested_inputs": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["reason"]
+    }
+  },
+
+  "hedging_language": {
+    "allowed_phrases": [
+      "Based on the available information",
+      "It appears that",
+      "It is likely that",
+      "There is some uncertainty"
+    ],
+    "forbidden_phrases": [
+      "I am certain that",
+      "This is definitely true",
+      "Without any doubt"
+    ]
+  },
+
+  "hallucination_prevention": {
+    "rules": [
+      "Agents must not fabricate facts when uncertainty is high.",
+      "Agents must not infer missing data unless explicitly allowed by the task.",
+      "Agents must not produce authoritative statements when confidence is below 0.6.",
+      "Agents must explicitly mark unknown values as 'unknown'."
+    ]
+  },
+
+  "integration": {
+    "applies_to": ["tasks", "workflows", "evaluators"],
+    "usage_notes": [
+      "Evaluators may score uncertainty handling as part of reasoning quality.",
+      "Workflows may branch based on uncertainty states.",
+      "Tasks may require explicit uncertainty reporting in their output schema."
+    ]
+  },
+
+  "metadata": {
+    "status": "stable",
+    "created_at": "2026-03-14T00:00:00Z",
+    "updated_at": "2026-03-14T00:00:00Z"
+  }
+}
