@@ -1,10 +1,15 @@
 {
-  "version": "3.0.0",
-  "tasks": [
-    {
-      "id": "extract_entities_v1",
-      "name": "Extract Entities",
-      "path": "/public-endpoints/tasks/extract_entities_v1.json"
+  "version": "1.0.0",
+  "endpoints": {
+    "run": {
+      "description": "Execute a task with validated input and return structured output.",
+      "method": "POST",
+      "path": "/run",
+      "schema": "/public-endpoints/run.schema.json",
+      "examples": {
+        "request": "/public-endpoints/example-request.json",
+        "response": "/public-endpoints/example-response.json"
+      }
     }
-  ]
+  }
 }
