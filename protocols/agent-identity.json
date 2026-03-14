@@ -1,0 +1,125 @@
+{
+  "id": "agentbase.protocols.agent_identity.v1",
+  "version": "1.0.0",
+  "description": "Protocol defining how agents identify themselves, sign requests, declare trust levels, and maintain persistent identity within the AgentBase ecosystem.",
+
+  "goals": [
+    "Provide a consistent identity structure for all agents.",
+    "Enable persistent agent identity across tasks, workflows, and sessions.",
+    "Support optional cryptographic signing for trust and verification.",
+    "Allow systems to evaluate agent reputation and capability history.",
+    "Enable multi-agent ecosystems with stable identity semantics."
+  ],
+
+  "identity_envelope": {
+    "type": "object",
+    "properties": {
+      "agent_id": {
+        "type": "string",
+        "description": "Globally unique identifier for the agent."
+      },
+      "name": {
+        "type": "string",
+        "description": "Human-readable agent name."
+      },
+      "version": {
+        "type": "string",
+        "description": "Agent software version."
+      },
+      "capabilities_version": {
+        "type": "string",
+        "description": "Version of the capability manifest used by the agent."
+      },
+      "trust_level": {
+        "type": "string",
+        "enum": ["unknown", "unverified", "verified", "trusted", "system"],
+        "description": "Declared trust level of the agent."
+      },
+      "metadata": {
+        "type": "object",
+        "description": "Optional metadata for agent classification or grouping."
+      }
+    },
+    "required": ["agent_id", "name", "version"],
+    "additionalProperties": false
+  },
+
+  "signing": {
+    "enabled": true,
+    "signature_envelope": {
+      "type": "object",
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "enum": ["none", "hmac_sha256", "ed25519"]
+        },
+        "signature": {
+          "type": "string",
+          "description": "Base64-encoded signature of the request payload."
+        },
+        "key_id": {
+          "type": "string",
+          "description": "Identifier for the signing key."
+        }
+      },
+      "required": ["algorithm"],
+      "additionalProperties": false
+    },
+    "notes": [
+      "Signing is optional but recommended for agents operating in shared or adversarial environments.",
+      "Systems may reject unsigned requests depending on trust policy."
+    ]
+  },
+
+  "trust_policies": {
+    "levels": {
+      "unknown": "No identity information available.",
+      "unverified": "Identity provided but not validated.",
+      "verified": "Identity validated by the system.",
+      "trusted": "Agent has a positive reputation and validated identity.",
+      "system": "Reserved for system-level agents."
+    },
+    "default_level": "unverified",
+    "rules": [
+      "Agents with trust_level=unknown may be restricted from executing sensitive tasks.",
+      "Agents with trust_level=system may bypass certain capability checks.",
+      "Trust levels may be upgraded based on reputation or verification."
+    ]
+  },
+
+  "reputation": {
+    "enabled": true,
+    "metrics": [
+      "success_rate",
+      "error_rate",
+      "average_latency_ms",
+      "capability_reliability",
+      "telemetry_completeness"
+    ],
+    "notes": [
+      "Reputation is derived from telemetry and execution history.",
+      "Reputation scores are optional but recommended for multi-agent systems."
+    ]
+  },
+
+  "integration": {
+    "applies_to": [
+      "tasks",
+      "workflows",
+      "evaluators",
+      "public_endpoints",
+      "multi_agent_environments"
+    ],
+    "usage_notes": [
+      "Identity envelopes may be included in all task and workflow requests.",
+      "Evaluators may score identity consistency and trustworthiness.",
+      "Systems may enforce identity requirements for sensitive operations."
+    ]
+  },
+
+  "metadata": {
+    "status": "stable",
+    "created_at": "2026-03-14T00:00:00Z",
+    "updated_at": "2026-03-14T00:00:00Z"
+  }
+}
