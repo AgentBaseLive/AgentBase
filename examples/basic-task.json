@@ -1,0 +1,18 @@
+{
+  "id": "hello-world",
+  "description": "Return a friendly greeting.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "name": { "type": "string" }
+    },
+    "required": ["name"]
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "greeting": { "type": "string" }
+    },
+    "required": ["greeting"]
+  }
+}
