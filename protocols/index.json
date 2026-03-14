@@ -5,6 +5,7 @@
     "action": "/protocols/action.json",
     "uncertainty": "/protocols/uncertainty.json",
     "error_codes": "/protocols/error-codes.json",
-    "capability_negotiation": "/protocols/capability-negotiation.json"
+    "capability_negotiation": "/protocols/capability-negotiation.json",
+    "telemetry": "/protocols/telemetry.json"
   }
 }
