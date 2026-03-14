@@ -1,7 +1,0 @@
-{
-  "task": "hello-world",
-  "status": "success",
-  "output": {
-    "greeting": "Hello, Ada!"
-  }
-}
