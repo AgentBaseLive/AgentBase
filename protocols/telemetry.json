@@ -1,0 +1,94 @@
+{
+  "id": "agentbase.protocols.telemetry.v1",
+  "version": "1.0.0",
+  "description": "Protocol defining how agents report usage, performance, and execution metadata to the AgentBase telemetry endpoint.",
+
+  "goals": [
+    "Enable agents to report task and workflow execution events.",
+    "Provide a consistent query-parameter format for telemetry pings.",
+    "Support analytics without requiring a backend service.",
+    "Allow systems to derive usage, performance, and reliability metrics from static hosting logs."
+  ],
+
+  "telemetry_endpoint": {
+    "path": "/telemetry/ping.gif",
+    "method": "GET",
+    "notes": "The endpoint accepts any file type; only query parameters matter."
+  },
+
+  "required_parameters": {
+    "task": {
+      "type": "string",
+      "description": "The task or workflow ID being executed."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["success", "error"],
+      "description": "Execution outcome."
+    }
+  },
+
+  "optional_parameters": {
+    "code": {
+      "type": "string",
+      "description": "Error code when status=error."
+    },
+    "ms": {
+      "type": "integer",
+      "description": "Execution duration in milliseconds."
+    },
+    "agent": {
+      "type": "string",
+      "description": "Agent name and version (e.g., ExampleAgent/1.0)."
+    },
+    "workflow_step": {
+      "type": "string",
+      "description": "Optional workflow step identifier."
+    },
+    "metadata": {
+      "type": "string",
+      "description": "Arbitrary URL-encoded metadata for debugging or analytics."
+    }
+  },
+
+  "example_ping": {
+    "url": "/telemetry/ping.gif?task=fetch_url_v1&status=success&ms=87&agent=ExampleAgent%2F1.0"
+  },
+
+  "log_interpretation": {
+    "fields": [
+      "timestamp",
+      "full URL with query parameters",
+      "user-agent string",
+      "IP/geolocation (if available)",
+      "HTTP status code"
+    ],
+    "notes": [
+      "All analytics are derived from static hosting logs.",
+      "No server-side processing is required.",
+      "Query parameters must be URL-encoded."
+    ]
+  },
+
+  "constraints": {
+    "max_query_length": 1024,
+    "allowed_methods": ["GET"],
+    "must_include_required_parameters": true,
+    "ignore_unknown_parameters": true
+  },
+
+  "integration": {
+    "applies_to": ["tasks", "workflows", "evaluators"],
+    "usage_notes": [
+      "Tasks may include telemetry_url in their metadata.",
+      "Workflows may send telemetry per step.",
+      "Evaluators may send telemetry for scoring events."
+    ]
+  },
+
+  "metadata": {
+    "status": "stable",
+    "created_at": "2026-03-14T00:00:00Z",
+    "updated_at": "2026-03-14T00:00:00Z"
+  }
+}
