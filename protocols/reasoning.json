@@ -1,0 +1,110 @@
+{
+  "id": "agentbase.protocols.reasoning.v1",
+  "version": "1.0.0",
+  "description": "Protocol defining how agents structure, expose, and constrain internal reasoning within the AgentBase ecosystem.",
+
+  "goals": [
+    "Provide a consistent structure for agent reasoning traces.",
+    "Allow evaluators to inspect reasoning without leaking sensitive internals by default.",
+    "Constrain reasoning to reduce hallucinations and uncontrolled divergence.",
+    "Support both simple and multi-step reasoning flows."
+  ],
+
+  "reasoning_model": {
+    "modes": [
+      "simple",
+      "chain_of_thought",
+      "tool_augmented"
+    ],
+    "default_mode": "simple",
+    "allow_mode_switching": true
+  },
+
+  "trace_structure": {
+    "type": "object",
+    "properties": {
+      "steps": {
+        "type": "array",
+        "description": "Ordered reasoning steps taken by the agent.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "index": { "type": "integer" },
+            "type": {
+              "type": "string",
+              "enum": ["observation", "inference", "decision", "tool_call", "reflection"]
+            },
+            "content": { "type": "string" },
+            "timestamp": { "type": "string", "format": "date-time" },
+            "metadata": { "type": "object" }
+          },
+          "required": ["index", "type", "content"]
+        }
+      },
+      "final_conclusion": {
+        "type": "string",
+        "description": "The final reasoning outcome that led to the agent's response or action."
+      }
+    },
+    "required": ["steps"]
+  },
+
+  "exposure_policy": {
+    "default_visibility": "summary_only",
+    "visibility_levels": [
+      "none",
+      "summary_only",
+      "full_trace"
+    ],
+    "rules": [
+      {
+        "id": "safety_default",
+        "description": "By default, only a high-level reasoning summary is exposed to end users.",
+        "applies_to": ["end_user"],
+        "visibility": "summary_only"
+      },
+      {
+        "id": "evaluator_access",
+        "description": "Evaluators and debugging tools may access full reasoning traces.",
+        "applies_to": ["evaluator", "system"],
+        "visibility": "full_trace"
+      }
+    ]
+  },
+
+  "constraints": {
+    "max_steps": 64,
+    "max_tokens_per_step": 256,
+    "allowed_step_types": [
+      "observation",
+      "inference",
+      "decision",
+      "tool_call",
+      "reflection"
+    ],
+    "must_include_final_conclusion": true
+  },
+
+  "integration": {
+    "applies_to": [
+      "tasks",
+      "workflows",
+      "evaluators"
+    ],
+    "referenced_by": [
+      "/schemas/task.schema.json",
+      "/schemas/workflow.schema.json"
+    ],
+    "usage_notes": [
+      "Tasks may request reasoning traces for debugging or evaluation.",
+      "Workflows may aggregate reasoning traces across multiple steps.",
+      "Evaluators may score reasoning quality, coherence, and safety."
+    ]
+  },
+
+  "metadata": {
+    "status": "stable",
+    "created_at": "2026-03-14T00:00:00Z",
+    "updated_at": "2026-03-14T00:00:00Z"
+  }
+}
