@@ -1,7 +1,0 @@
-{
-  "agent": "example-agent",
-  "task": "hello-world",
-  "input": {
-    "name": "Ada"
-  }
-}
