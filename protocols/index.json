@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "protocols": {
+    "reasoning": "/protocols/reasoning.json",
+    "action": "/protocols/action.json",
+    "uncertainty": "/protocols/uncertainty.json",
+    "error_codes": "/protocols/error-codes.json",
+    "capability_negotiation": "/protocols/capability-negotiation.json"
+  }
+}
