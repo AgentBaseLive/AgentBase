@@ -1,0 +1,94 @@
+{
+  "id": "agentbase.protocols.error_codes.v1",
+  "version": "1.0.0",
+  "description": "Unified error taxonomy for tasks, workflows, evaluators, and public endpoints within the AgentBase ecosystem.",
+
+  "goals": [
+    "Provide a consistent, machine-readable error taxonomy.",
+    "Ensure all components of AgentBase report failures in a predictable format.",
+    "Enable workflows and evaluators to branch or score based on error types.",
+    "Support debugging, observability, and safe recovery."
+  ],
+
+  "error_envelope": {
+    "type": "object",
+    "properties": {
+      "code": { "type": "string" },
+      "message": { "type": "string" },
+      "details": { "type": "object" },
+      "timestamp": { "type": "string", "format": "date-time" },
+      "origin": {
+        "type": "string",
+        "enum": ["task", "workflow", "evaluator", "public_endpoint", "system"]
+      }
+    },
+    "required": ["code", "message"],
+    "additionalProperties": false
+  },
+
+  "categories": {
+    "validation": {
+      "description": "Input or schema validation failures.",
+      "codes": {
+        "VALIDATION_INPUT_MISMATCH": "Input does not conform to the task's input_schema.",
+        "VALIDATION_OUTPUT_MISMATCH": "Task output does not conform to the output_schema.",
+        "VALIDATION_SCHEMA_ERROR": "Schema itself is malformed or incompatible."
+      }
+    },
+
+    "execution": {
+      "description": "Errors occurring during task or workflow execution.",
+      "codes": {
+        "EXECUTION_FAILURE": "Task execution failed due to internal logic.",
+        "EXECUTION_TIMEOUT": "Task exceeded the allowed execution time.",
+        "EXECUTION_RETRY_EXHAUSTED": "All retry attempts failed.",
+        "EXECUTION_SIDE_EFFECT_BLOCKED": "Task attempted a forbidden side effect."
+      }
+    },
+
+    "workflow": {
+      "description": "Errors specific to workflow orchestration.",
+      "codes": {
+        "WORKFLOW_STEP_FAILURE": "A workflow step failed.",
+        "WORKFLOW_INPUT_MAPPING_ERROR": "Invalid or unresolved input mapping.",
+        "WORKFLOW_CYCLE_DETECTED": "Workflow contains a circular dependency.",
+        "WORKFLOW_UNRESOLVED_REFERENCE": "A step referenced a non-existent output."
+      }
+    },
+
+    "capability": {
+      "description": "Errors related to missing or incompatible capabilities.",
+      "codes": {
+        "CAPABILITY_NOT_SUPPORTED": "Agent does not support the required capability.",
+        "CAPABILITY_VERSION_MISMATCH": "Protocol or capability version is incompatible.",
+        "CAPABILITY_NEGOTIATION_FAILED": "Agent and system could not agree on capabilities."
+      }
+    },
+
+    "system": {
+      "description": "Internal system-level failures.",
+      "codes": {
+        "SYSTEM_INTERNAL_ERROR": "Unexpected internal system failure.",
+        "SYSTEM_RESOURCE_EXCEEDED": "Memory, CPU, or storage limits exceeded.",
+        "SYSTEM_UNAVAILABLE": "System temporarily unavailable.",
+        "SYSTEM_DEPENDENCY_FAILURE": "A required external dependency failed."
+      }
+    }
+  },
+
+  "integration": {
+    "applies_to": ["tasks", "workflows", "evaluators", "public_endpoints"],
+    "usage_notes": [
+      "All components must return errors using the error envelope.",
+      "Workflows may branch based on error categories.",
+      "Evaluators may score error handling quality.",
+      "Public endpoints must never expose internal system details."
+    ]
+  },
+
+  "metadata": {
+    "status": "stable",
+    "created_at": "2026-03-14T00:00:00Z",
+    "updated_at": "2026-03-14T00:00:00Z"
+  }
+}
