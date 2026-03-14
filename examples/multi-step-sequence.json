@@ -1,0 +1,7 @@
+{
+  "id": "multi-step-demo",
+  "steps": [
+    { "task": "fetch-user", "input": { "user_id": 123 } },
+    { "task": "summarize-profile", "input_from": "fetch-user" }
+  ]
+}
