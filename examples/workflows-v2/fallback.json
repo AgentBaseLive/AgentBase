@@ -1,0 +1,30 @@
+{
+  "id": "fallback_example_v2",
+  "description": "Demonstrates fallback logic when a primary step fails.",
+  "steps": [
+    {
+      "id": "primary",
+      "task": "fetch_url_v1",
+      "input_mapping": {
+        "url": "state.input.url"
+      },
+      "on_error": "route",
+      "route_to": "fallback"
+    },
+    {
+      "id": "fallback",
+      "task": "return_default_v1",
+      "input_mapping": {
+        "value": "state.input.default_value"
+      }
+    },
+    {
+      "id": "final",
+      "task": "process_content_v1",
+      "depends_on": ["primary", "fallback"],
+      "input_mapping": {
+        "content": "state.primary.output ?? state.fallback.output"
+      }
+    }
+  ]
+}
