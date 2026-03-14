@@ -1,0 +1,116 @@
+{
+  "id": "agentbase.protocols.action.v1",
+  "version": "1.0.0",
+  "description": "Protocol defining how agents perform actions, structure action envelopes, handle execution semantics, and report results within the AgentBase ecosystem.",
+
+  "goals": [
+    "Provide a consistent structure for agent-initiated actions.",
+    "Ensure safe, predictable execution semantics across tasks and workflows.",
+    "Define how agents validate inputs before execution.",
+    "Standardize how results, errors, and side effects are reported."
+  ],
+
+  "action_envelope": {
+    "type": "object",
+    "properties": {
+      "action_id": {
+        "type": "string",
+        "description": "Unique identifier for the action instance."
+      },
+      "task": {
+        "type": "string",
+        "description": "The task ID being executed."
+      },
+      "input": {
+        "type": "object",
+        "description": "Validated input payload for the task."
+      },
+      "context": {
+        "type": "object",
+        "description": "Optional execution context (workflow state, metadata, caller identity)."
+      },
+      "timestamp": {
+        "type": "string",
+        "format": "date-time"
+      }
+    },
+    "required": ["action_id", "task", "input"],
+    "additionalProperties": false
+  },
+
+  "execution_semantics": {
+    "validation": {
+      "input_must_conform_to_task_schema": true,
+      "reject_on_schema_mismatch": true
+    },
+    "timeouts": {
+      "default_ms": 10000,
+      "max_ms": 60000
+    },
+    "retries": {
+      "enabled": true,
+      "max_attempts": 2,
+      "retry_on": ["network_error", "transient_failure"]
+    },
+    "side_effects": {
+      "allowed": false,
+      "notes": "Tasks must be pure functions unless explicitly marked otherwise."
+    }
+  },
+
+  "result_envelope": {
+    "type": "object",
+    "properties": {
+      "action_id": { "type": "string" },
+      "status": {
+        "type": "string",
+        "enum": ["success", "failure"]
+      },
+      "output": {
+        "type": "object",
+        "description": "Task output if successful."
+      },
+      "error": {
+        "type": "object",
+        "description": "Error details if the action failed.",
+        "properties": {
+          "code": { "type": "string" },
+          "message": { "type": "string" },
+          "details": { "type": "object" }
+        }
+      },
+      "timestamp": {
+        "type": "string",
+        "format": "date-time"
+      }
+    },
+    "required": ["action_id", "status"],
+    "additionalProperties": false
+  },
+
+  "constraints": {
+    "max_input_size_kb": 128,
+    "max_output_size_kb": 512,
+    "max_context_size_kb": 64,
+    "task_must_exist_in_directory": true
+  },
+
+  "integration": {
+    "applies_to": ["tasks", "workflows", "evaluators"],
+    "referenced_by": [
+      "/schemas/task.schema.json",
+      "/schemas/workflow.schema.json"
+    ],
+    "usage_notes": [
+      "Workflows wrap multiple action envelopes into a sequence.",
+      "Evaluators may inspect action envelopes for scoring.",
+      "Tasks must declare input and output schemas to enable validation."
+    ]
+  },
+
+  "metadata": {
+    "status": "stable",
+    "created_at": "2026-03-14T00:00:00Z",
+    "updated_at": "2026-03-14T00:00:00Z"
+  }
+}
