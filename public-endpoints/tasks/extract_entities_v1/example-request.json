@@ -1,3 +1,8 @@
 {
-  "text": "John Smith visited Brisbane last Tuesday to meet with the Queensland Health Minister."
+  "entities": [
+    { "type": "person", "value": "John Smith" },
+    { "type": "location", "value": "Brisbane" },
+    { "type": "date", "value": "last Tuesday" },
+    { "type": "organization", "value": "Queensland Health" }
+  ]
 }
