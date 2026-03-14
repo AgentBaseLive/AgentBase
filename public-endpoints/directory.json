@@ -1,15 +1,12 @@
 {
-  "version": "1.0.0",
-  "endpoints": {
-    "run": {
-      "description": "Execute a task with validated input and return structured output.",
-      "method": "POST",
-      "path": "/run",
-      "schema": "/public-endpoints/run.schema.json",
-      "examples": {
-        "request": "/public-endpoints/example-request.json",
-        "response": "/public-endpoints/example-response.json"
-      }
+  "tasks": {
+    "extract_entities_v1": {
+      "path": "tasks/extract_entities_v1"
+    }
+  },
+  "evaluators": {
+    "extract_entities_v1": {
+      "path": "evaluators/extract_entities_v1"
     }
   }
 }
