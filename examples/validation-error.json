@@ -1,0 +1,7 @@
+{
+  "error": "validation_error",
+  "details": {
+    "missing_field": "name",
+    "expected_type": "string"
+  }
+}
