@@ -4,17 +4,26 @@
   "type": "object",
   "properties": {
     "id": { "type": "string" },
+    "description": { "type": "string" },
+    "metadata": { "type": "object" },
+
     "steps": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "task": { "type": "string" },
-          "input_mapping": { "type": "object" }
+
+          "input_mapping": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          }
         },
-        "required": ["task"]
+        "required": ["task"],
+        "additionalProperties": false
       }
     }
   },
-  "required": ["id", "steps"]
+  "required": ["id", "steps"],
+  "additionalProperties": false
 }
