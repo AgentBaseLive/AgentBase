@@ -1,0 +1,110 @@
+{
+  "id": "agentbase.protocols.capability_negotiation.v1",
+  "version": "1.0.0",
+  "description": "Protocol defining how agents declare capabilities, negotiate versions, and ensure compatibility within the AgentBase ecosystem.",
+
+  "goals": [
+    "Enable agents to declare supported capabilities in a machine-readable format.",
+    "Allow systems to negotiate compatible protocol and capability versions.",
+    "Prevent execution when capabilities are missing or incompatible.",
+    "Support optional and experimental capabilities without breaking compatibility."
+  ],
+
+  "capability_manifest": {
+    "type": "object",
+    "properties": {
+      "agent_id": { "type": "string" },
+      "protocol_version": { "type": "string" },
+      "capabilities": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "version": { "type": "string" },
+            "status": {
+              "type": "string",
+              "enum": ["stable", "beta", "experimental", "deprecated"]
+            }
+          },
+          "required": ["name", "version"]
+        }
+      },
+      "metadata": { "type": "object" }
+    },
+    "required": ["agent_id", "protocol_version", "capabilities"],
+    "additionalProperties": false
+  },
+
+  "negotiation_flow": {
+    "steps": [
+      "1. Agent sends capability_manifest to the system.",
+      "2. System compares manifest against required capabilities for the requested task or workflow.",
+      "3. System identifies compatible, incompatible, and missing capabilities.",
+      "4. System responds with a negotiation_result.",
+      "5. Agent either proceeds, adapts, or aborts based on the result."
+    ]
+  },
+
+  "negotiation_result": {
+    "type": "object",
+    "properties": {
+      "status": {
+        "type": "string",
+        "enum": ["compatible", "incompatible", "partial"]
+      },
+      "missing_capabilities": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "version_conflicts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "capability": { "type": "string" },
+            "required_version": { "type": "string" },
+            "provided_version": { "type": "string" }
+          },
+          "required": ["capability", "required_version", "provided_version"]
+        }
+      },
+      "notes": { "type": "string" }
+    },
+    "required": ["status"],
+    "additionalProperties": false
+  },
+
+  "compatibility_rules": {
+    "must_match_protocol_version": true,
+    "allow_backward_compatible_minor_versions": true,
+    "disallow_major_version_mismatch": true,
+    "optional_capabilities": [
+      "reasoning_trace",
+      "uncertainty_reporting",
+      "evaluator_support"
+    ]
+  },
+
+  "failure_conditions": {
+    "missing_required_capabilities": true,
+    "major_version_conflict": true,
+    "explicit_incompatibility_declared": true
+  },
+
+  "integration": {
+    "applies_to": ["tasks", "workflows", "evaluators", "public_endpoints"],
+    "usage_notes": [
+      "Tasks may declare required capabilities in their metadata.",
+      "Workflows may require multi-step capability negotiation.",
+      "Evaluators may score capability completeness.",
+      "Public endpoints may reject requests from incompatible agents."
+    ]
+  },
+
+  "metadata": {
+    "status": "stable",
+    "created_at": "2026-03-14T00:00:00Z",
+    "updated_at": "2026-03-14T00:00:00Z"
+  }
+}
