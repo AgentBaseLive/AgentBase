@@ -1,0 +1,120 @@
+{
+  "id": "agentbase.protocols.execution_semantics.v2",
+  "version": "1.0.0",
+  "description": "Protocol defining advanced workflow execution semantics including branching, parallelism, guards, cancellation, and state propagation.",
+
+  "goals": [
+    "Extend workflows beyond linear step sequences.",
+    "Enable conditional branching and guarded execution.",
+    "Support parallel execution of independent steps.",
+    "Allow cancellation, early termination, and failure routing.",
+    "Provide a consistent state model across complex workflows."
+  ],
+
+  "execution_modes": {
+    "sequential": "Steps execute in order, one after another.",
+    "parallel": "Multiple steps execute concurrently when dependencies allow.",
+    "conditional": "Execution depends on guard expressions.",
+    "race": "Multiple branches run; the first to complete determines the result."
+  },
+
+  "step_extensions": {
+    "properties": {
+      "mode": {
+        "type": "string",
+        "enum": ["sequential", "parallel", "conditional", "race"],
+        "default": "sequential"
+      },
+      "guard": {
+        "type": "string",
+        "description": "Boolean expression referencing workflow state."
+      },
+      "depends_on": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "List of step IDs that must complete before this step runs."
+      },
+      "on_error": {
+        "type": "string",
+        "enum": ["continue", "stop", "route"],
+        "default": "stop"
+      },
+      "route_to": {
+        "type": "string",
+        "description": "Step ID to route to when on_error=route."
+      },
+      "timeout_ms": {
+        "type": "integer",
+        "description": "Optional per-step timeout."
+      }
+    }
+  },
+
+  "state_model": {
+    "description": "Defines how workflow state is created, updated, and accessed.",
+    "rules": [
+      "Each step may write to workflow state using its output.",
+      "State keys must be namespaced by step ID.",
+      "Guards may reference any previously written state.",
+      "Parallel steps write to independent namespaces to avoid collisions."
+    ]
+  },
+
+  "branching": {
+    "types": {
+      "if": "Guarded execution: if guard=true, run step or branch.",
+      "switch": "Multi-branch selection based on state value.",
+      "fallback": "Run primary step; if it fails, run fallback step."
+    },
+    "examples": {
+      "if_guard": "guard: state.fetch.status == 'ok'",
+      "switch_case": "guard: state.input.type == 'image'"
+    }
+  },
+
+  "parallelism": {
+    "rules": [
+      "Steps with no dependency relationship may run in parallel.",
+      "Parallel steps must not write to the same state key.",
+      "Parallel failures may be aggregated or routed individually."
+    ],
+    "aggregation_modes": ["all", "any", "first_success", "first_failure"]
+  },
+
+  "cancellation": {
+    "supported": true,
+    "triggers": [
+      "timeout_ms exceeded",
+      "race branch completes",
+      "explicit cancellation from workflow controller"
+    ],
+    "effects": [
+      "Cancelled steps must not write to workflow state.",
+      "Dependent steps must not execute."
+    ]
+  },
+
+  "failure_routing": {
+    "rules": [
+      "If on_error=continue, workflow proceeds normally.",
+      "If on_error=stop, workflow terminates immediately.",
+      "If on_error=route, workflow jumps to route_to step."
+    ]
+  },
+
+  "integration": {
+    "applies_to": ["workflows"],
+    "requires_schema_update": true,
+    "usage_notes": [
+      "Workflows may mix sequential, parallel, and conditional steps.",
+      "State must be deterministic and fully machine-readable.",
+      "Execution engines must respect dependency graphs and guards."
+    ]
+  },
+
+  "metadata": {
+    "status": "experimental",
+    "created_at": "2026-03-14T00:00:00Z",
+    "updated_at": "2026-03-14T00:00:00Z"
+  }
+}
