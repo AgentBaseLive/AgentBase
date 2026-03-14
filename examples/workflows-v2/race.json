@@ -1,0 +1,30 @@
+{
+  "id": "race_example_v2",
+  "description": "Demonstrates race execution where the first successful step wins.",
+  "steps": [
+    {
+      "id": "fetch_primary",
+      "task": "fetch_url_v1",
+      "mode": "race",
+      "input_mapping": {
+        "url": "state.input.primary_url"
+      }
+    },
+    {
+      "id": "fetch_backup",
+      "task": "fetch_url_v1",
+      "mode": "race",
+      "input_mapping": {
+        "url": "state.input.backup_url"
+      }
+    },
+    {
+      "id": "use_winner",
+      "task": "process_content_v1",
+      "depends_on": ["fetch_primary", "fetch_backup"],
+      "input_mapping": {
+        "content": "state.race_winner.output"
+      }
+    }
+  ]
+}
