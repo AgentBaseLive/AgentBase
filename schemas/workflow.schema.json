@@ -1,7 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "AgentBase Workflow Schema",
+  "title": "AgentBase Workflow Schema v2",
   "type": "object",
+
   "properties": {
     "id": { "type": "string" },
     "description": { "type": "string" },
@@ -12,18 +13,54 @@
       "items": {
         "type": "object",
         "properties": {
+          "id": { "type": "string" },
+
           "task": { "type": "string" },
 
           "input_mapping": {
             "type": "object",
             "additionalProperties": { "type": "string" }
+          },
+
+          "mode": {
+            "type": "string",
+            "enum": ["sequential", "parallel", "conditional", "race"],
+            "default": "sequential"
+          },
+
+          "guard": {
+            "type": "string",
+            "description": "Boolean expression referencing workflow state."
+          },
+
+          "depends_on": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+
+          "on_error": {
+            "type": "string",
+            "enum": ["continue", "stop", "route"],
+            "default": "stop"
+          },
+
+          "route_to": {
+            "type": "string",
+            "description": "Step ID to route to when on_error=route."
+          },
+
+          "timeout_ms": {
+            "type": "integer",
+            "description": "Optional per-step timeout."
           }
         },
-        "required": ["task"],
+
+        "required": ["id", "task"],
         "additionalProperties": false
       }
     }
   },
+
   "required": ["id", "steps"],
   "additionalProperties": false
 }
