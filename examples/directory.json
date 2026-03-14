@@ -1,15 +1,40 @@
 
-Agents can use this file to enumerate and discover example sets programmatically.
+---
+
+## 🎯 Purpose of This Repository
+
+This repo serves as:
+
+- a **reference implementation** for agent‑native websites  
+- a **test surface** for agent developers  
+- a **template** for building your own AgentBase‑compatible site  
+- a **standards anchor** for the broader ecosystem  
+
+Everything is intentionally minimal, modular, and easy to extend.
 
 ---
 
-## Purpose
+## 🛠 Extending AgentBase
 
-The examples in this directory serve as:
+You can extend this repo by adding:
 
-- **reference patterns** for developers  
-- **test fixtures** for agents  
-- **documentation anchors** for the platform  
-- **safe starting points** for building new workflows and tasks  
+- new tasks  
+- new workflow examples  
+- new protocol versions  
+- additional public endpoints  
+- domain‑specific capabilities  
 
-They are intentionally small, stable, and easy to extend.
+All additions should follow the existing patterns:
+
+- JSON‑first  
+- machine‑readable  
+- versioned  
+- minimal  
+- stable  
+
+---
+
+## 📄 License
+
+This reference implementation is provided for educational and interoperability purposes.  
+You may adapt it for your own agent‑native sites.
