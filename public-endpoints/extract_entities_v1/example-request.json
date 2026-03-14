@@ -1,0 +1,6 @@
+{
+  "entities": [
+    { "type": "person", "value": "John Smith" },
+    { "type": "location", "value": "Brisbane" }
+  ]
+}
