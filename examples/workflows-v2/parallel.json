@@ -1,0 +1,31 @@
+{
+  "id": "parallel_example_v2",
+  "description": "Demonstrates parallel execution of independent steps.",
+  "steps": [
+    {
+      "id": "fetch_a",
+      "task": "fetch_url_v1",
+      "input_mapping": {
+        "url": "state.input.url_a"
+      },
+      "mode": "parallel"
+    },
+    {
+      "id": "fetch_b",
+      "task": "fetch_url_v1",
+      "input_mapping": {
+        "url": "state.input.url_b"
+      },
+      "mode": "parallel"
+    },
+    {
+      "id": "combine",
+      "task": "combine_results_v1",
+      "depends_on": ["fetch_a", "fetch_b"],
+      "input_mapping": {
+        "a": "state.fetch_a.output",
+        "b": "state.fetch_b.output"
+      }
+    }
+  ]
+}
