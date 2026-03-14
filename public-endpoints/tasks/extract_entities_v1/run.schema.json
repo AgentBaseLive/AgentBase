@@ -1,0 +1,11 @@
+{
+  "title": "extract_entities_v1 run schema",
+  "type": "object",
+  "properties": {
+    "text": {
+      "type": "string",
+      "description": "The unstructured text to extract entities from."
+    }
+  },
+  "required": ["text"]
+}
