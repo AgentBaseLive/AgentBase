@@ -1,5 +1,13 @@
 {
-  "version": "3.0.0",
-  "description": "AgentBase public reference implementation",
-  "directory": "/public-endpoints/directory.json"
+  "name": "public-endpoints",
+  "description": "Public endpoints exposed by this AgentBase instance.",
+  "version": "1.0.0",
+  "endpoints": {
+    "tasks": [
+      "extract_entities_v1"
+    ],
+    "evaluators": [
+      "extract_entities_v1"
+    ]
+  }
 }
