@@ -1,0 +1,28 @@
+{
+  "id": "conditional_example_v2",
+  "description": "Demonstrates conditional execution using a guard expression.",
+  "steps": [
+    {
+      "id": "fetch",
+      "task": "fetch_url_v1",
+      "input_mapping": {
+        "url": "state.input.url"
+      }
+    },
+    {
+      "id": "parse",
+      "task": "parse_json_v1",
+      "mode": "conditional",
+      "guard": "state.fetch.status == 'success'",
+      "input_mapping": {
+        "json": "state.fetch.output"
+      }
+    },
+    {
+      "id": "fallback",
+      "task": "return_default_v1",
+      "mode": "conditional",
+      "guard": "state.fetch.status != 'success'"
+    }
+  ]
+}
