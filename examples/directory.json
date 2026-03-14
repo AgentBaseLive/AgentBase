@@ -1,0 +1,15 @@
+
+Agents can use this file to enumerate and discover example sets programmatically.
+
+---
+
+## Purpose
+
+The examples in this directory serve as:
+
+- **reference patterns** for developers  
+- **test fixtures** for agents  
+- **documentation anchors** for the platform  
+- **safe starting points** for building new workflows and tasks  
+
+They are intentionally small, stable, and easy to extend.
