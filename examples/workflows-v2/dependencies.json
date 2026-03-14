@@ -1,0 +1,38 @@
+{
+  "id": "dependencies_example_v2",
+  "description": "Demonstrates explicit step dependencies forming a small DAG.",
+  "steps": [
+    {
+      "id": "fetch_user",
+      "task": "fetch_user_v1",
+      "input_mapping": {
+        "user_id": "state.input.user_id"
+      }
+    },
+    {
+      "id": "fetch_orders",
+      "task": "fetch_orders_v1",
+      "depends_on": ["fetch_user"],
+      "input_mapping": {
+        "user_id": "state.fetch_user.output.id"
+      }
+    },
+    {
+      "id": "fetch_recommendations",
+      "task": "fetch_recommendations_v1",
+      "depends_on": ["fetch_user"],
+      "input_mapping": {
+        "interests": "state.fetch_user.output.interests"
+      }
+    },
+    {
+      "id": "combine",
+      "task": "combine_user_data_v1",
+      "depends_on": ["fetch_orders", "fetch_recommendations"],
+      "input_mapping": {
+        "orders": "state.fetch_orders.output",
+        "recommendations": "state.fetch_recommendations.output"
+      }
+    }
+  ]
+}
