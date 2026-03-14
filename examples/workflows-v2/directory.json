@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "examples": {
+    "parallel": "/examples/workflows-v2/parallel.json",
+    "conditional": "/examples/workflows-v2/conditional.json",
+    "race": "/examples/workflows-v2/race.json",
+    "fallback": "/examples/workflows-v2/fallback.json",
+    "dependencies": "/examples/workflows-v2/dependencies.json"
+  }
+}
